@@ -1,0 +1,83 @@
+<!-- Inherit template from base.html file -->
+{% extends 'base.html' %}
+
+<!-- Head Section -->
+{% block head %} {% endblock %}
+
+<!-- Body Section -->
+{% block body %}
+
+<section id="page">
+    <section class="page-content">
+        <!--App Title-->
+        <header>
+            <h2>My Job App</h2>
+        </header>
+        <!--/ App Title-->
+
+        <!--Job Buttons-->
+        <section class="job-btns">
+            <button id="jobBtn">Add Job</button>
+            <input type="submit" value="Upload Resume" />
+        </section>
+        <!--Job Buttons-->
+
+        <!--Content body-->
+        <section class="content-body">
+            <table>
+                <tr class="table-title">
+                    <th>Company</th>
+                    <th>Job Title</th>
+                    <th>Location</th>
+                    <th>Job Post Date</th>
+                    <th>Apply</th>
+                    <th>Date Added</th>
+                    <th></th>
+                </tr>
+
+                {% for job in jobs %}
+
+                <tr>
+                    <td>{{ job.company }}</td>
+                    <td>{{ job.jobtitle }}</td>
+                    <td>{{ job.location }}</td>
+                    <td>{{ job.date_posted }} </td>
+                    <!-- <td>{{ job.url }}</td> -->
+                    <td><button><a href="{{ job.url }}"></a>Apply</button></td>
+                    <td>{{ job.date_added.date() }} </td>
+                    <td>
+                        <input type="submit" value="Edit" /><input type="submit" value="Delete" />
+                    </td>
+                </tr>
+
+                {% endfor %}
+            </table>
+        </section>
+        <!--/ Content body-->
+
+        <!--Modal Content-->
+        <section>
+            <div id="myModal" class="modal">
+                <div class="modal-content">
+                    <span id=list-title>Add a Job Listing to track your applications!</span>
+                    <span class="close">&times;</span>
+                    <form action="/" method="POST">
+                        <input type="text" name="company" id="company" placeholder="Company">
+                        <input type="text" name="jobTitle" id="jobTitle" placeholder="Job Title">
+                        <input type="text" name="location" id="location" placeholder="Location">
+                        <input type="url" name="jobUrl" id="jobUrl" placeholder="Job URL">
+                        <small style="text-align:left" ;>Please add the date Job was posted</small>
+                        <input type="date" name="datePosted" id="datePost" placeholder="">
+                        <div class="job-btns">
+                            <button class="form-btn">Submit</button>
+                            <input type="reset">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+        <!--/ Modal Content-->
+    </section>
+</section>
+
+{% endblock %}
