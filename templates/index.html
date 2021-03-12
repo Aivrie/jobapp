@@ -29,10 +29,10 @@
                     <th>Company</th>
                     <th>Job Title</th>
                     <th>Location</th>
-                    <th>Job Post Date</th>
+                    <th>Post Date</th>
                     <th>Apply</th>
                     <th>Date Added</th>
-                    <th></th>
+                    <th>Actions</th>
                 </tr>
 
                 {% for job in jobs %}
@@ -43,10 +43,11 @@
                     <td>{{ job.location }}</td>
                     <td>{{ job.date_posted }} </td>
                     <!-- <td>{{ job.url }}</td> -->
-                    <td><button><a href="{{ job.url }}"></a>Apply</button></td>
+                    <td><button><a href="{{ job.url }}">Apply</a></button></td>
                     <td>{{ job.date_added.date() }} </td>
                     <td>
-                        <input type="submit" value="Edit" /><input type="submit" value="Delete" />
+                        <button><a href="/delete/{{job.id}}">Delete</a></button>
+                        <button id="jobBtnEdit">Edit</button>
                     </td>
                 </tr>
 
@@ -62,7 +63,7 @@
                     <span id=list-title>Add a Job Listing to track your applications!</span>
                     <span class="close">&times;</span>
                     <form action="/" method="POST">
-                        <input type="text" name="company" id="company" placeholder="Company">
+                        <input type="text" name="company" id="company" placeholder="Company" value="">
                         <input type="text" name="jobTitle" id="jobTitle" placeholder="Job Title">
                         <input type="text" name="location" id="location" placeholder="Location">
                         <input type="url" name="jobUrl" id="jobUrl" placeholder="Job URL">
@@ -77,6 +78,33 @@
             </div>
         </section>
         <!--/ Modal Content-->
+
+
+        <!--Modal Content (filled)-->
+        <section>
+            <div id="myModalEdit" class="modal">
+                <div class="modal-content">
+                    <span id=list-title>Update Job Listing</span>
+                    <span class="close-edit">&times;</span>
+                    <form action="/update/{{job.id}}" method="POST">
+
+                        <input type="text" name="company" id="company" value="{{job.company}}">
+                        <input type="text" name="jobTitle" id="jobTitle">
+                        <input type="text" name="location" id="location">
+                        <input type="url" name="jobUrl" id="jobUrl">
+                        <small style="text-align:left" ;>Please add the date Job was posted</small>
+                        <input type="date" name="datePosted" id="datePost">
+
+                        <div class="job-btns">
+                            <button class="form-btn">Submit</button>
+                            <input type="reset">
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </section>
+        <!--/ Modal Content (filled)-->
     </section>
 </section>
 

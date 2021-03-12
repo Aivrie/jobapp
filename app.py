@@ -17,7 +17,7 @@ class Job(db.Model):
     jobtitle = db.Column(db.String(20), nullable=False)
     location = db.Column(db.String(20), nullable=False)
     url = db.Column(db.String(20), nullable=False)
-    date_posted = db.Column(db.String(20))
+    date_posted = db.Column(db.String(20), nullable=False)
     date_added = db.Column(db.DateTime, default=datetime.utcnow)
     # apply = db.Column(db.String(20))
     
@@ -27,6 +27,7 @@ class Job(db.Model):
 
 
 # Create the default page
+# Route to Add entry
 @app.route('/', methods=['POST', 'GET'])
 # Define a function to load the default page
 def index():
@@ -49,7 +50,6 @@ def index():
             db.session.add(new_job)
             db.session.commit()
             return redirect('/')
-        
         except:
             return 'There was an issue adding your job to the database'
         
@@ -58,6 +58,54 @@ def index():
         return render_template('index.html', jobs=jobs)
 
 
+
+# Route to Delete entry
+@app.route('/delete/<int:id>')
+def delete(id):
+    # store job to delete in variable
+    job_to_delete = Job.query.get_or_404(id)
+    
+    try:
+        db.session.delete(job_to_delete)
+        db.session.commit()
+        return redirect('/')
+
+    except:
+        return 'There was a problem deleting this job'
+    
+    
+# Route to Add entry
+@app.route('/update/<int:id>', methods=['GET', 'POST'])
+# Define a function to load the default page
+def update(id):
+    
+    if request.method == 'POST':
+        
+        job = Job.query.get(request.form.get(id))
+        
+        # company
+        job.company = request.form['company']
+        # job title
+        job.jobTitle = request.form['jobTitle']
+        # location
+        job.location = request.form['location']
+        # url
+        job.jobUrl = request.form['jobUrl']
+        # posted
+        job.datePosted = request.form['datePosted']
+        
+          
+        try:
+            db.session.commit()
+            return redirect('/')
+        except:
+            return 'There was an issue editing your job'
+        
+    else:
+        return render_template('/')
+        
+    
+    
 
 if __name__ == "__main__":
     app.run(debug=True)
